@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "FlickrHelper.h"
 
 @interface ViewController ()
 
@@ -17,13 +18,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+	
+    [FlickrHelper loadTopPlacesOnCompletion:^(NSArray *photos, NSError *error) {
+        NSLog(@"photos: %@\nerror: %@", photos, error);
+    }];
+    
 }
 
 @end
