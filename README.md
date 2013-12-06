@@ -15,6 +15,7 @@ A free FlickrAPIKey is available at
 
 ### various versions are available via branches and tags:
 
++ [Assignment #5 Task #8](http://cs193p.m2m.at/cs193p-assignment-5-task-8-fall-2013-14/) -> [assignment5task8](https://github.com/m2mtech/topplaces-2013-14/tree/assignment5task8)
 + [Assignment #5 Task #6](http://cs193p.m2m.at/cs193p-assignment-5-task-6-fall-2013-14/) -> [assignment5task6](https://github.com/m2mtech/topplaces-2013-14/tree/assignment5task6)
 + [Assignment #5 Task #5](http://cs193p.m2m.at/cs193p-assignment-5-task-5-fall-2013-14/) -> [assignment5task5](https://github.com/m2mtech/topplaces-2013-14/tree/assignment5task5)
 + [Assignment #5 Task #4](http://cs193p.m2m.at/cs193p-assignment-5-task-4-fall-2013-14/) -> [assignment5task4](https://github.com/m2mtech/topplaces-2013-14/tree/assignment5task4)
