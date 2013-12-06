@@ -25,6 +25,8 @@
 		5B0D0E701850BDF100298282 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5B0D0E6F1850BDF100298282 /* README.md */; };
 		5B0D0E751850BF5A00298282 /* FlickrFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0D0E741850BF5A00298282 /* FlickrFetcher.m */; };
 		5B0D0E7B1850C65A00298282 /* FlickrHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0D0E7A1850C65A00298282 /* FlickrHelper.m */; };
+		5B0D0E7E1851068C00298282 /* PlacesTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0D0E7D1851068C00298282 /* PlacesTVC.m */; };
+		5B0D0E81185106A300298282 /* TopPlacesTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0D0E80185106A300298282 /* TopPlacesTVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +66,10 @@
 		5B0D0E741850BF5A00298282 /* FlickrFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrFetcher.m; sourceTree = "<group>"; };
 		5B0D0E791850C65A00298282 /* FlickrHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrHelper.h; sourceTree = "<group>"; };
 		5B0D0E7A1850C65A00298282 /* FlickrHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrHelper.m; sourceTree = "<group>"; };
+		5B0D0E7C1851068C00298282 /* PlacesTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlacesTVC.h; sourceTree = "<group>"; };
+		5B0D0E7D1851068C00298282 /* PlacesTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlacesTVC.m; sourceTree = "<group>"; };
+		5B0D0E7F185106A300298282 /* TopPlacesTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopPlacesTVC.h; sourceTree = "<group>"; };
+		5B0D0E80185106A300298282 /* TopPlacesTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopPlacesTVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,11 +132,13 @@
 			children = (
 				5B0D0E491850BDC900298282 /* Main_iPhone.storyboard */,
 				5B0D0E4C1850BDC900298282 /* Main_iPad.storyboard */,
-				5B0D0E4F1850BDC900298282 /* ViewController.h */,
-				5B0D0E501850BDC900298282 /* ViewController.m */,
 				5B0D0E521850BDC900298282 /* Images.xcassets */,
 				5B0D0E791850C65A00298282 /* FlickrHelper.h */,
 				5B0D0E7A1850C65A00298282 /* FlickrHelper.m */,
+				5B0D0E7C1851068C00298282 /* PlacesTVC.h */,
+				5B0D0E7D1851068C00298282 /* PlacesTVC.m */,
+				5B0D0E7F185106A300298282 /* TopPlacesTVC.h */,
+				5B0D0E80185106A300298282 /* TopPlacesTVC.m */,
 				5B0D0E711850BF5A00298282 /* Flickr Fetcher */,
 				5B0D0E3E1850BDC900298282 /* Supporting Files */,
 			);
@@ -140,6 +148,8 @@
 		5B0D0E3E1850BDC900298282 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				5B0D0E4F1850BDC900298282 /* ViewController.h */,
+				5B0D0E501850BDC900298282 /* ViewController.m */,
 				5B0D0E461850BDC900298282 /* AppDelegate.h */,
 				5B0D0E471850BDC900298282 /* AppDelegate.m */,
 				5B0D0E3F1850BDC900298282 /* TopPlaces-Info.plist */,
@@ -280,7 +290,9 @@
 				5B0D0E7B1850C65A00298282 /* FlickrHelper.m in Sources */,
 				5B0D0E511850BDC900298282 /* ViewController.m in Sources */,
 				5B0D0E481850BDC900298282 /* AppDelegate.m in Sources */,
+				5B0D0E7E1851068C00298282 /* PlacesTVC.m in Sources */,
 				5B0D0E751850BF5A00298282 /* FlickrFetcher.m in Sources */,
+				5B0D0E81185106A300298282 /* TopPlacesTVC.m in Sources */,
 				5B0D0E441850BDC900298282 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -500,6 +512,7 @@
 				5B0D0E6B1850BDC900298282 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5B0D0E6C1850BDC900298282 /* Build configuration list for PBXNativeTarget "TopPlacesTests" */ = {
 			isa = XCConfigurationList;
@@ -508,6 +521,7 @@
 				5B0D0E6E1850BDC900298282 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
