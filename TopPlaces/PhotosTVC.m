@@ -8,6 +8,7 @@
 
 #import "PhotosTVC.h"
 #import "FlickrHelper.h"
+#import "ImageVC.h"
 
 @interface PhotosTVC ()
 
@@ -43,16 +44,22 @@
     return cell;
 }
 
-/*
 #pragma mark - Navigation
 
-// In a story board-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)prepareImageVC:(ImageVC *)vc
+              forPhoto:(NSDictionary *)photo
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    vc.imageURL = [FlickrHelper URLforPhoto:photo];
+    vc.title = [FlickrHelper titleOfPhoto:photo];
 }
 
- */
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
+    if ([segue.identifier isEqualToString:@"Show Photo"] && indexPath) {
+        [self prepareImageVC:segue.destinationViewController
+                    forPhoto:self.photos[indexPath.row]];
+    }
+}
 
 @end

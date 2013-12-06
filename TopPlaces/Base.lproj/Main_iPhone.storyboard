@@ -32,11 +32,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Photo Cell" textLabel="zqz-a5-102" detailTextLabel="Af9-lg-RLy" style="IBUITableViewCellStyleSubtitle" id="Za3-K5-9i6">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Photo Cell" textLabel="zqz-a5-102" detailTextLabel="Af9-lg-RLy" style="IBUITableViewCellStyleSubtitle" id="Za3-K5-9i6">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Za3-K5-9i6" id="AIK-pH-JsX">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zqz-a5-102">
@@ -55,6 +55,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="1H1-m7-zRI" kind="push" identifier="Show Photo" id="mWn-1h-yJO"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -137,13 +140,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="cet-9J-ANr">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="cet-9J-ANr">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cet-9J-ANr" id="UAE-eu-qku">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="1H1-m7-zRI" kind="push" identifier="Show Photo" id="hwg-f4-HL3"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -156,6 +162,48 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R17-1N-kMf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1143" y="741"/>
+        </scene>
+        <!--ImageVC-->
+        <scene sceneID="WM7-n1-ULG">
+            <objects>
+                <viewController id="1H1-m7-zRI" customClass="ImageVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cFH-SL-STS"/>
+                        <viewControllerLayoutGuide type="bottom" id="l7g-l4-gQb"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="zwK-lb-xkV">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VSV-p3-RCU">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </scrollView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="YlI-j0-KTq">
+                                <rect key="frame" x="142" y="266" width="37" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="VSV-p3-RCU" firstAttribute="top" secondItem="zwK-lb-xkV" secondAttribute="top" id="5GP-kR-cFM"/>
+                            <constraint firstItem="VSV-p3-RCU" firstAttribute="centerY" secondItem="YlI-j0-KTq" secondAttribute="centerY" id="ICV-qJ-IWb"/>
+                            <constraint firstAttribute="trailing" secondItem="VSV-p3-RCU" secondAttribute="trailing" id="ThX-A2-YAm"/>
+                            <constraint firstItem="VSV-p3-RCU" firstAttribute="centerX" secondItem="YlI-j0-KTq" secondAttribute="centerX" id="U7s-U9-Ii7"/>
+                            <constraint firstItem="VSV-p3-RCU" firstAttribute="leading" secondItem="zwK-lb-xkV" secondAttribute="leading" id="nXu-cf-G77"/>
+                            <constraint firstAttribute="bottom" secondItem="VSV-p3-RCU" secondAttribute="bottom" id="ouN-ch-NKZ"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="hvY-EY-oZg"/>
+                    <connections>
+                        <outlet property="scrollView" destination="VSV-p3-RCU" id="UsJ-Y8-Ebl"/>
+                        <outlet property="spinner" destination="YlI-j0-KTq" id="8iq-gG-iue"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yU3-Rx-PHX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2217" y="426"/>
         </scene>
         <!--Navigation Controller - Top Places-->
         <scene sceneID="2OZ-sJ-fXe">
@@ -204,4 +252,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="mWn-1h-yJO"/>
+    </inferredMetricsTieBreakers>
 </document>

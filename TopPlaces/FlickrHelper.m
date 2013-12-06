@@ -127,4 +127,9 @@
     return subtitle;
 }
 
++ (NSURL *)URLforPhoto:(NSDictionary *)photo
+{
+    return [FlickrHelper URLforPhoto:photo format:FlickrPhotoFormatLarge];
+}
+
 @end
