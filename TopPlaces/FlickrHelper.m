@@ -28,6 +28,26 @@
     [task resume];
 }
 
++ (void)loadPhotosInPlace:(NSDictionary *)place
+               maxResults:(NSUInteger)results
+             onCompletion:(void (^)(NSArray *photos, NSError *error))completionHandler
+{
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
+    NSURLSessionDownloadTask *task = [session downloadTaskWithURL:[FlickrHelper URLforPhotosInPlace:[place valueForKeyPath:FLICKR_PLACE_ID] maxResults:results]
+                                                completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+                                                    NSArray *photos;
+                                                    if (!error) {
+                                                        photos = [[NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfURL:location]
+                                                                                                  options:0
+                                                                                                    error:&error] valueForKeyPath:FLICKR_RESULTS_PHOTOS];
+                                                    }
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        completionHandler(photos, error);
+                                                    });
+                                                }];
+    [task resume];
+}
+
 + (NSString *)titleOfPlace:(NSDictionary *)place
 {
     return [[[place valueForKeyPath:FLICKR_PLACE_NAME]

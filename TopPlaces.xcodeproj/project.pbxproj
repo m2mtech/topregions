@@ -27,6 +27,8 @@
 		5B0D0E7B1850C65A00298282 /* FlickrHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0D0E7A1850C65A00298282 /* FlickrHelper.m */; };
 		5B0D0E7E1851068C00298282 /* PlacesTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0D0E7D1851068C00298282 /* PlacesTVC.m */; };
 		5B0D0E81185106A300298282 /* TopPlacesTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0D0E80185106A300298282 /* TopPlacesTVC.m */; };
+		5B0D0E841851EE5900298282 /* PhotosTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0D0E831851EE5900298282 /* PhotosTVC.m */; };
+		5B0D0E871851EF8A00298282 /* PlacePhotosTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0D0E861851EF8A00298282 /* PlacePhotosTVC.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +72,10 @@
 		5B0D0E7D1851068C00298282 /* PlacesTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlacesTVC.m; sourceTree = "<group>"; };
 		5B0D0E7F185106A300298282 /* TopPlacesTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopPlacesTVC.h; sourceTree = "<group>"; };
 		5B0D0E80185106A300298282 /* TopPlacesTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopPlacesTVC.m; sourceTree = "<group>"; };
+		5B0D0E821851EE5900298282 /* PhotosTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosTVC.h; sourceTree = "<group>"; };
+		5B0D0E831851EE5900298282 /* PhotosTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosTVC.m; sourceTree = "<group>"; };
+		5B0D0E851851EF8A00298282 /* PlacePhotosTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlacePhotosTVC.h; sourceTree = "<group>"; };
+		5B0D0E861851EF8A00298282 /* PlacePhotosTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlacePhotosTVC.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +145,10 @@
 				5B0D0E7D1851068C00298282 /* PlacesTVC.m */,
 				5B0D0E7F185106A300298282 /* TopPlacesTVC.h */,
 				5B0D0E80185106A300298282 /* TopPlacesTVC.m */,
+				5B0D0E821851EE5900298282 /* PhotosTVC.h */,
+				5B0D0E831851EE5900298282 /* PhotosTVC.m */,
+				5B0D0E851851EF8A00298282 /* PlacePhotosTVC.h */,
+				5B0D0E861851EF8A00298282 /* PlacePhotosTVC.m */,
 				5B0D0E711850BF5A00298282 /* Flickr Fetcher */,
 				5B0D0E3E1850BDC900298282 /* Supporting Files */,
 			);
@@ -287,7 +297,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5B0D0E841851EE5900298282 /* PhotosTVC.m in Sources */,
 				5B0D0E7B1850C65A00298282 /* FlickrHelper.m in Sources */,
+				5B0D0E871851EF8A00298282 /* PlacePhotosTVC.m in Sources */,
 				5B0D0E511850BDC900298282 /* ViewController.m in Sources */,
 				5B0D0E481850BDC900298282 /* AppDelegate.m in Sources */,
 				5B0D0E7E1851068C00298282 /* PlacesTVC.m in Sources */,
