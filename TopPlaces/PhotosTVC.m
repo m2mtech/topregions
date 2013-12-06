@@ -37,8 +37,8 @@
                                                             forIndexPath:indexPath];
     
     NSDictionary *photo = self.photos[indexPath.row];
-    cell.textLabel.text = [photo valueForKeyPath:FLICKR_PHOTO_TITLE];
-    cell.detailTextLabel.text = [photo valueForKeyPath:FLICKR_PHOTO_DESCRIPTION];
+    cell.textLabel.text = [FlickrHelper titleOfPhoto:photo];
+    cell.detailTextLabel.text = [FlickrHelper subtitleOfPhoto:photo];
     
     return cell;
 }

@@ -23,4 +23,7 @@
 + (NSDictionary *)placesByCountries:(NSArray *)places;
 + (NSArray *)countriesFromPlacesByCountry:(NSDictionary *)placesByCountry;
 
++ (NSString *)titleOfPhoto:(NSDictionary *)photo;
++ (NSString *)subtitleOfPhoto:(NSDictionary *)photo;
+
 @end
