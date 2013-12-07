@@ -33,7 +33,7 @@
              onCompletion:(void (^)(NSArray *photos, NSError *error))completionHandler
 {
     NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
-    NSURLSessionDownloadTask *task = [session downloadTaskWithURL:[FlickrHelper URLforPhotosInPlace:[place valueForKeyPath:FLICKR_PLACE_ID] maxResults:results]
+    NSURLSessionDownloadTask *task = [session downloadTaskWithURL:[FlickrHelper URLforPhotosInPlace:[place valueForKeyPath:FLICKR_PLACE_ID] maxResults:(int)results]
                                                 completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
                                                     NSArray *photos;
                                                     if (!error) {

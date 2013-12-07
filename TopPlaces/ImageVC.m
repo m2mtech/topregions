@@ -8,7 +8,7 @@
 
 #import "ImageVC.h"
 
-@interface ImageVC () <UIScrollViewDelegate>
+@interface ImageVC () <UIScrollViewDelegate, UISplitViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
@@ -44,6 +44,7 @@
 
 - (void)setImage:(UIImage *)image
 {
+    self.scrollView.zoomScale = 1.0;
     self.imageView.image = image;
     [self.imageView sizeToFit];
     self.imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
@@ -55,7 +56,12 @@
 - (void)setZoomScaleToFillScreen
 {
     double wScale = self.scrollView.bounds.size.width / self.imageView.image.size.width;
-    double hScale = (self.scrollView.bounds.size.height - self.navigationController.navigationBar.frame.size.height - self.tabBarController.tabBar.frame.size.height - [UIApplication sharedApplication].statusBarFrame.size.height) / self.imageView.image.size.height;
+    double hScale = (self.scrollView.bounds.size.height
+                     - self.navigationController.navigationBar.frame.size.height
+                     - self.tabBarController.tabBar.frame.size.height
+                     - MIN([UIApplication sharedApplication].statusBarFrame.size.height,
+                           [UIApplication sharedApplication].statusBarFrame.size.width)
+                     ) / self.imageView.image.size.height;
     if (wScale > hScale) self.scrollView.zoomScale = wScale;
     else self.scrollView.zoomScale = hScale;
 }
@@ -101,5 +107,41 @@
     return self.imageView;
 }
 
+# pragma mark - split view controller delegate
+
+- (void)awakeFromNib
+{
+    self.splitViewController.delegate = self;
+}
+
+- (BOOL)splitViewController:(UISplitViewController *)svc
+   shouldHideViewController:(UIViewController *)vc
+              inOrientation:(UIInterfaceOrientation)orientation
+{
+    return UIInterfaceOrientationIsPortrait(orientation);
+}
+
+- (void)splitViewController:(UISplitViewController *)svc
+     willHideViewController:(UIViewController *)aViewController
+          withBarButtonItem:(UIBarButtonItem *)barButtonItem
+       forPopoverController:(UIPopoverController *)pc
+{
+    UIViewController *master = aViewController;
+    if ([master isKindOfClass:[UITabBarController class]]) {
+        master = ((UITabBarController *)master).selectedViewController;
+    }
+    if ([master isKindOfClass:[UINavigationController class]]) {
+        master = ((UINavigationController *)master).topViewController;
+    }
+    barButtonItem.title = master.title;
+    self.navigationItem.leftBarButtonItem = barButtonItem;
+}
+
+- (void)splitViewController:(UISplitViewController *)svc
+     willShowViewController:(UIViewController *)aViewController
+  invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
+{
+    self.navigationItem.leftBarButtonItem = nil;
+}
 
 @end
