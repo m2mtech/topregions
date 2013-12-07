@@ -27,5 +27,6 @@
 + (NSString *)subtitleOfPhoto:(NSDictionary *)photo;
 
 + (NSURL *)URLforPhoto:(NSDictionary *)photo;
++ (NSString *)IDforPhoto:(NSDictionary *)photo;
 
 @end

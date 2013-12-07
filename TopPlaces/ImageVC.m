@@ -133,7 +133,11 @@
     if ([master isKindOfClass:[UINavigationController class]]) {
         master = ((UINavigationController *)master).topViewController;
     }
-    barButtonItem.title = master.title;
+    if (master) {
+        barButtonItem.title = master.title;
+    } else {
+        barButtonItem.title = @"Top Places";
+    }
     self.navigationItem.leftBarButtonItem = barButtonItem;
 }
 

@@ -9,6 +9,7 @@
 #import "PhotosTVC.h"
 #import "FlickrHelper.h"
 #import "ImageVC.h"
+#import "RecentPhotos.h"
 
 @interface PhotosTVC ()
 
@@ -64,6 +65,7 @@ didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     vc.imageURL = [FlickrHelper URLforPhoto:photo];
     vc.title = [FlickrHelper titleOfPhoto:photo];
+    [RecentPhotos addPhoto:photo];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender

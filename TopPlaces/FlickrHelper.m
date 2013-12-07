@@ -132,4 +132,9 @@
     return [FlickrHelper URLforPhoto:photo format:FlickrPhotoFormatLarge];
 }
 
++ (NSString *)IDforPhoto:(NSDictionary *)photo
+{
+    return [photo valueForKeyPath:FLICKR_PHOTO_ID];
+}
+
 @end
