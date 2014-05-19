@@ -1,6 +1,6 @@
-# Top Places of cs193p lecture (Fall 2013-14)
+# Top Regions of cs193p lecture (Fall 2013-14)
 
-written in Xcode 5.0.2 for iOS7.0+
+written in Xcode 5.1.1 for iOS7.1+
 
 
 To be able to run this app please set the FlickrAPIKey in FlickrAPIKey.h
@@ -14,6 +14,8 @@ A free FlickrAPIKey is available at
 
 
 ### various versions are available via branches and tags:
+
+### Top Regions is based on Top Places:
 
 + [Assignment #5 Task #11](http://cs193p.m2m.at/cs193p-assignment-5-task-11-fall-2013-14/) -> [assignment5task11](https://github.com/m2mtech/topplaces-2013-14/tree/assignment5task11)
 + [Assignment #5 Task #10](http://cs193p.m2m.at/cs193p-assignment-5-task-10-fall-2013-14/) -> [assignment5task10](https://github.com/m2mtech/topplaces-2013-14/tree/assignment5task10)
