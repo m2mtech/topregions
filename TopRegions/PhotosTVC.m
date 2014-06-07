@@ -3,44 +3,25 @@
 //  TopRegions
 //
 //  Created by Martin Mandl on 06.12.13.
-//  Copyright (c) 2013 m2m server software gmbh. All rights reserved.
+//  Copyright (c) 2014 m2m server software gmbh. All rights reserved.
 //
 
 #import "PhotosTVC.h"
-#import "FlickrHelper.h"
 #import "ImageVC.h"
-#import "RecentPhotos.h"
-
-@interface PhotosTVC ()
-
-@end
+#import "Photo.h"
 
 @implementation PhotosTVC
 
-- (void)setPhotos:(NSArray *)photos
-{
-    _photos = photos;
-    [self.tableView reloadData];
-}
-
 #pragma mark - Table view data source
-
-- (NSInteger)tableView:(UITableView *)tableView
- numberOfRowsInSection:(NSInteger)section
-{
-    return [self.photos count];
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Photo Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier
-                                                            forIndexPath:indexPath];
-    
-    NSDictionary *photo = self.photos[indexPath.row];
-    cell.textLabel.text = [FlickrHelper titleOfPhoto:photo];
-    cell.detailTextLabel.text = [FlickrHelper subtitleOfPhoto:photo];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"Photo Cell"];
+
+    Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    cell.textLabel.text = photo.title;
+    cell.detailTextLabel.text = photo.subtitle;
     
     return cell;
 }
@@ -50,31 +31,40 @@
 - (void)tableView:(UITableView *)tableView
 didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    id detail = self.splitViewController.viewControllers[1];
-    if ([detail isKindOfClass:[UINavigationController class]]) {
-        detail = [((UINavigationController *)detail).viewControllers firstObject];
+    id detailvc = [self.splitViewController.viewControllers lastObject];
+    if ([detailvc isKindOfClass:[UINavigationController class]]) {
+        detailvc = [((UINavigationController *)detailvc).viewControllers firstObject];
+        [self prepareViewController:detailvc
+                           forSegue:nil
+                      fromIndexPath:indexPath];
     }
-    [self prepareImageVC:detail
-                forPhoto:self.photos[indexPath.row]];
 }
 
 #pragma mark - Navigation
 
-- (void)prepareImageVC:(ImageVC *)vc
-              forPhoto:(NSDictionary *)photo
+- (void)prepareViewController:(id)vc
+                     forSegue:(NSString *)segueIdentifer
+                fromIndexPath:(NSIndexPath *)indexPath
 {
-    vc.imageURL = [FlickrHelper URLforPhoto:photo];
-    vc.title = [FlickrHelper titleOfPhoto:photo];
-    [RecentPhotos addPhoto:photo];
+    Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    if ([vc isKindOfClass:[ImageVC class]]) {
+        ImageVC *ivc = (ImageVC *)vc;
+        ivc.imageURL = [NSURL URLWithString:photo.imageURL];
+        ivc.title = photo.title;
+    }
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
-    if ([segue.identifier isEqualToString:@"Show Photo"] && indexPath) {
-        [self prepareImageVC:segue.destinationViewController
-                    forPhoto:self.photos[indexPath.row]];
+    NSIndexPath *indexPath = nil;
+    if ([sender isKindOfClass:[UITableViewCell class]]) {
+        indexPath = [self.tableView indexPathForCell:sender];
     }
+    [self prepareViewController:segue.destinationViewController
+                       forSegue:segue.identifier
+                  fromIndexPath:indexPath];
 }
+
 
 @end

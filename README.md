@@ -10,10 +10,12 @@ e.g.:
 \#define FlickrAPIKey @"1234567890"
 
 A free FlickrAPIKey is available at
-   http://www.flickr.com/services/api/misc.api_keys.html
+   https://www.flickr.com/services/api/misc.api_keys.html
 
 
 ### various versions are available via branches and tags:
+
++ [Assignment #6 Task #1 to #7](http://cs193p.m2m.at/tag/cs193p+assignment-6+task-1-7+2013-14/) -> [assignment6task1-7](https://github.com/m2mtech/topregions/tree/assignment6task1-7)
 
 ### Top Regions is based on Top Places:
 

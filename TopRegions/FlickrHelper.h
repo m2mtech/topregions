@@ -3,12 +3,23 @@
 //  TopRegions
 //
 //  Created by Martin Mandl on 05.12.13.
-//  Copyright (c) 2013 m2m server software gmbh. All rights reserved.
+//  Copyright (c) 2014 m2m server software gmbh. All rights reserved.
 //
 
 #import "FlickrFetcher.h"
 
+typedef void (^RegionCompletionHandler) (NSString *regionName, void(^whenDone)());
+
 @interface FlickrHelper : FlickrFetcher
+
++ (void)handleEventsForBackgroundURLSession:(NSString *)identifier
+                          completionHandler:(void (^)())completionHandler;
+
++ (void)startBackgroundDownloadRecentPhotosOnCompletion:(void (^)(NSArray *photos, void(^whenDone)()))completionHandler;
+
++ (void)loadRecentPhotosOnCompletion:(void (^)(NSArray *places, NSError *error))completionHandler;
+
++ (void)startBackgroundDownloadRegionForPlaceID:(NSString *)placeID onCompletion:(RegionCompletionHandler)completionHandler;
 
 + (void)loadTopPlacesOnCompletion:(void (^)(NSArray *places, NSError *error))completionHandler;
 + (void)loadPhotosInPlace:(NSDictionary *)place
@@ -28,5 +39,12 @@
 
 + (NSURL *)URLforPhoto:(NSDictionary *)photo;
 + (NSString *)IDforPhoto:(NSDictionary *)photo;
++ (NSURL *)URLforThumbnail:(NSDictionary *)photo;
+
++ (NSString *)placeIDforPhoto:(NSDictionary *)photo;
+
++ (NSString *)ownerOfPhoto:(NSDictionary *)photo;
+
++ (NSString *)placeIDforPlace:(NSDictionary *)place;
 
 @end

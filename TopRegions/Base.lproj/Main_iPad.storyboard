@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="z3Y-88-gKb">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" useAutolayout="YES" initialViewController="z3Y-88-gKb">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--Split View Controller-->
@@ -37,10 +37,10 @@
             </objects>
             <point key="canvasLocation" x="1017" y="1470"/>
         </scene>
-        <!--Place PhotosTVC-->
+        <!--Region PhotosTVC-->
         <scene sceneID="gfS-9f-dPf">
             <objects>
-                <tableViewController id="p0k-7g-Sbu" customClass="PlacePhotosTVC" sceneMemberID="viewController">
+                <tableViewController id="p0k-7g-Sbu" customClass="RegionPhotosTVC" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="9hh-ct-eyR">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -88,16 +88,16 @@
             </objects>
             <point key="canvasLocation" x="2439" y="495"/>
         </scene>
-        <!--Top PlacesTVC - Top Places-->
+        <!--Top RegionsTVC - Top Places-->
         <scene sceneID="Xgn-Ti-klz">
             <objects>
-                <tableViewController title="Top Places" id="j3S-jB-XHC" customClass="TopPlacesTVC" sceneMemberID="viewController">
+                <tableViewController title="Top Places" id="j3S-jB-XHC" customClass="TopRegionsTVC" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="QTj-s4-vlD">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Place Cell" textLabel="oZc-Wz-nTa" detailTextLabel="Q7y-do-Y5q" style="IBUITableViewCellStyleSubtitle" id="GjU-tK-bbB">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Region Cell" textLabel="oZc-Wz-nTa" detailTextLabel="Q7y-do-Y5q" style="IBUITableViewCellStyleSubtitle" id="GjU-tK-bbB">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GjU-tK-bbB" id="GBY-ws-8SH">
@@ -121,7 +121,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="p0k-7g-Sbu" kind="push" identifier="Show Place" id="3BI-TY-zwx"/>
+                                    <segue destination="p0k-7g-Sbu" kind="push" identifier="Show Region" id="3BI-TY-zwx"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -130,13 +130,10 @@
                             <outlet property="delegate" destination="j3S-jB-XHC" id="vIz-qW-tDT"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Top Places" id="I2l-tF-0Vz"/>
+                    <navigationItem key="navigationItem" title="Top Regions" id="I2l-tF-0Vz"/>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="VdW-E4-awh">
                         <autoresizingMask key="autoresizingMask"/>
                         <attributedString key="attributedTitle"/>
-                        <connections>
-                            <action selector="fetchPlaces" destination="j3S-jB-XHC" eventType="valueChanged" id="URG-QE-c9L"/>
-                        </connections>
                     </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QaK-Cc-KDc" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -230,11 +227,11 @@
             </objects>
             <point key="canvasLocation" x="1991" y="2438"/>
         </scene>
-        <!--Navigation Controller - Top Places-->
+        <!--Navigation Controller - Top Regions-->
         <scene sceneID="zlp-jS-2JN">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="riN-iw-Yme" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Top Places" image="world" id="015-ym-fpR"/>
+                    <tabBarItem key="tabBarItem" title="Top Regions" image="world" id="015-ym-fpR"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="5Wx-Ks-Yue">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

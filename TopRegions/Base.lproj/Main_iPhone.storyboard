@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="PCf-PK-O3u">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="PCf-PK-O3u">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3747"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
         <!--Tab Bar Controller-->
@@ -23,10 +23,10 @@
             </objects>
             <point key="canvasLocation" x="66" y="426"/>
         </scene>
-        <!--Place PhotosTVC-->
+        <!--Region PhotosTVC-->
         <scene sceneID="iNc-hz-Zfg">
             <objects>
-                <tableViewController id="d0g-KU-E4E" customClass="PlacePhotosTVC" sceneMemberID="viewController">
+                <tableViewController id="d0g-KU-E4E" customClass="RegionPhotosTVC" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Dhq-Ee-4b1">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -77,16 +77,16 @@
             </objects>
             <point key="canvasLocation" x="1670" y="59"/>
         </scene>
-        <!--Top PlacesTVC - Top Places-->
+        <!--Top RegionsTVC - Top Regions-->
         <scene sceneID="XsF-Cp-Tjx">
             <objects>
-                <tableViewController id="gXA-6N-Fle" customClass="TopPlacesTVC" sceneMemberID="viewController">
+                <tableViewController id="gXA-6N-Fle" customClass="TopRegionsTVC" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Oan-yk-NLV">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Place Cell" textLabel="R4y-ij-oIh" detailTextLabel="w2h-k9-H5p" style="IBUITableViewCellStyleSubtitle" id="3jG-1n-WG6">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Region Cell" textLabel="R4y-ij-oIh" detailTextLabel="w2h-k9-H5p" style="IBUITableViewCellStyleSubtitle" id="3jG-1n-WG6">
                                 <rect key="frame" x="0.0" y="86" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3jG-1n-WG6" id="v1d-Xt-k2x">
@@ -110,7 +110,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="d0g-KU-E4E" kind="push" identifier="Show Place" id="6bk-tt-AXu"/>
+                                    <segue destination="d0g-KU-E4E" kind="push" identifier="Show Region" id="6bk-tt-AXu"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -119,12 +119,9 @@
                             <outlet property="delegate" destination="gXA-6N-Fle" id="rbo-PZ-d2E"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Top Places" id="XvA-si-nPM"/>
+                    <navigationItem key="navigationItem" title="Top Regions" id="XvA-si-nPM"/>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="E5p-Vl-FtP">
                         <autoresizingMask key="autoresizingMask"/>
-                        <connections>
-                            <action selector="fetchPlaces" destination="gXA-6N-Fle" eventType="valueChanged" id="4O9-04-UgI"/>
-                        </connections>
                     </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yps-qd-09V" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -221,11 +218,11 @@
             </objects>
             <point key="canvasLocation" x="2217" y="426"/>
         </scene>
-        <!--Navigation Controller - Top Places-->
+        <!--Navigation Controller - Top Regions-->
         <scene sceneID="2OZ-sJ-fXe">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Fa6-nD-9vM" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Top Places" image="world" id="ZMX-DO-8b3"/>
+                    <tabBarItem key="tabBarItem" title="Top Regions" image="world" id="ZMX-DO-8b3"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="cOx-US-gJg">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -269,6 +266,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="hwg-f4-HL3"/>
+        <segue reference="mWn-1h-yJO"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -3,12 +3,116 @@
 //  TopRegions
 //
 //  Created by Martin Mandl on 05.12.13.
-//  Copyright (c) 2013 m2m server software gmbh. All rights reserved.
+//  Copyright (c) 2014 m2m server software gmbh. All rights reserved.
 //
 
 #import "FlickrHelper.h"
 
+@interface FlickrHelper() <NSURLSessionDownloadDelegate>
+
+@property (strong, nonatomic) NSURLSession *downloadSession;
+@property (copy, nonatomic) void (^downloadBackgroundURLSessionCompletionHandler)();
+@property (copy, nonatomic) void (^recentPhotosCompletionHandler)(NSArray *photos, void(^whenDone)());
+//@property (copy, nonatomic) void (^regionCompletionHandler)(NSString *regionName, void(^whenDone)());
+@property (strong, nonatomic) NSMutableDictionary *regionCompletionHandlers;
+
+@end
+
+#define FLICKR_FETCH @"Flickr Download Session"
+#define FLICKR_FETCH_RECENT_PHOTOS @"Flickr Download Task to Download Recent Photos"
+#define FLICKR_FETCH_REGION @"Flickr Download Task to Download Region"
+#define BACKGROUND_FLICKR_FETCH_TIMEOUT 10
+
 @implementation FlickrHelper
+
+- (NSMutableDictionary *)regionCompletionHandlers
+{
+    if (!_regionCompletionHandlers) {
+        _regionCompletionHandlers = [[NSMutableDictionary alloc] init];
+    }
+    return _regionCompletionHandlers;
+}
+
+- (NSURLSession *)downloadSession
+{
+    if (!_downloadSession) {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            _downloadSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration backgroundSessionConfiguration:FLICKR_FETCH]
+                                                             delegate:self
+                                                        delegateQueue:nil];
+        });
+    }
+    return _downloadSession;
+}
+
++ (FlickrHelper *)sharedFlickrHelper
+{
+    static dispatch_once_t pred = 0;
+    __strong static FlickrHelper *_sharedFlickrHelper = nil;
+    dispatch_once(&pred, ^{
+        _sharedFlickrHelper = [[self alloc] init];
+    });
+    return _sharedFlickrHelper;
+}
+
++ (void)handleEventsForBackgroundURLSession:(NSString *)identifier
+                          completionHandler:(void (^)())completionHandler
+{
+    if ([identifier isEqualToString:FLICKR_FETCH]) {
+        FlickrHelper *fh = [FlickrHelper sharedFlickrHelper];
+        fh.downloadBackgroundURLSessionCompletionHandler = completionHandler;
+    }
+}
+
++ (void)startBackgroundDownloadRecentPhotosOnCompletion:(void (^)(NSArray *photos, void(^whenDone)()))completionHandler
+{
+    FlickrHelper *fh = [FlickrHelper sharedFlickrHelper];
+    
+    [fh.downloadSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
+        if (![downloadTasks count]) {
+            NSURLSessionDownloadTask *task = [fh.downloadSession downloadTaskWithURL:[FlickrFetcher URLforRecentGeoreferencedPhotos]];
+            task.taskDescription = FLICKR_FETCH_RECENT_PHOTOS;
+            fh.recentPhotosCompletionHandler = completionHandler;
+            [task resume];
+        } else {
+            for (NSURLSessionDownloadTask *task in downloadTasks) [task resume];
+        }
+    }];
+}
+
++ (void)startBackgroundDownloadRegionForPlaceID:(NSString *)placeID onCompletion:(RegionCompletionHandler)completionHandler
+{
+    FlickrHelper *fh = [FlickrHelper sharedFlickrHelper];
+    
+    [fh.downloadSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
+        NSURLSessionDownloadTask *task = [fh.downloadSession downloadTaskWithURL:[FlickrFetcher URLforInformationAboutPlace:placeID]];
+        task.taskDescription = FLICKR_FETCH_REGION;
+        [fh.regionCompletionHandlers setObject:[completionHandler copy] forKey:@(task.taskIdentifier)];
+        [task resume];
+    }];
+}
+
++ (void)loadRecentPhotosOnCompletion:(void (^)(NSArray *places, NSError *error))completionHandler
+{
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration ephemeralSessionConfiguration];
+    config.allowsCellularAccess = NO;
+    config.timeoutIntervalForRequest = BACKGROUND_FLICKR_FETCH_TIMEOUT;
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+    NSURLSessionDownloadTask *task = [session downloadTaskWithURL:[FlickrHelper URLforRecentGeoreferencedPhotos]
+                                                completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+                                                    NSArray *photos;
+                                                    if (!error) {
+                                                        photos = [[NSJSONSerialization JSONObjectWithData:[NSData dataWithContentsOfURL:location]
+                                                                                                  options:0
+                                                                                                    error:&error] valueForKeyPath:FLICKR_RESULTS_PHOTOS];
+                                                    }
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        completionHandler(photos, error);
+                                                    });
+                                                }];
+    [task resume];
+}
 
 + (void)loadTopPlacesOnCompletion:(void (^)(NSArray *places, NSError *error))completionHandler
 {
@@ -132,9 +236,112 @@
     return [FlickrHelper URLforPhoto:photo format:FlickrPhotoFormatLarge];
 }
 
++ (NSURL *)URLforThumbnail:(NSDictionary *)photo
+{
+    return [FlickrHelper URLforPhoto:photo format:FlickrPhotoFormatSquare];
+}
+
 + (NSString *)IDforPhoto:(NSDictionary *)photo
 {
     return [photo valueForKeyPath:FLICKR_PHOTO_ID];
 }
+
++ (NSString *)placeIDforPhoto:(NSDictionary *)photo
+{
+    return [photo valueForKeyPath:FLICKR_PHOTO_PLACE_ID];
+}
+
++ (NSString *)ownerOfPhoto:(NSDictionary *)photo
+{
+    return [photo valueForKeyPath:FLICKR_PHOTO_OWNER];
+}
+
+#define FLICKR_PLACE_PLACE_ID @"place.place_id"
+
++ (NSString *)placeIDforPlace:(NSDictionary *)place
+{
+    return [place valueForKeyPath:FLICKR_PLACE_PLACE_ID];
+}
+
+
+#pragma mark - NSURLSessionDownloadDelegate
+
+- (void)URLSession:(NSURLSession *)session
+      downloadTask:(NSURLSessionDownloadTask *)downloadTask
+didFinishDownloadingToURL:(NSURL *)location
+{
+    if ([downloadTask.taskDescription isEqualToString:FLICKR_FETCH_RECENT_PHOTOS]) {
+        NSDictionary *flickrPropertyList;
+        NSData *flickrJSONData = [NSData dataWithContentsOfURL:location];
+        if (flickrJSONData) {
+            flickrPropertyList = [NSJSONSerialization JSONObjectWithData:flickrJSONData
+                                                                 options:0
+                                                                   error:NULL];
+        }
+        NSArray *photos = [flickrPropertyList valueForKeyPath:FLICKR_RESULTS_PHOTOS];
+        
+        self.recentPhotosCompletionHandler(photos, ^{
+            [self downloadTasksMightBeComplete];
+        });
+    } else if ([downloadTask.taskDescription isEqualToString:FLICKR_FETCH_REGION]) {
+        NSDictionary *flickrPropertyList;
+        NSData *flickrJSONData = [NSData dataWithContentsOfURL:location];
+        if (flickrJSONData) {
+            flickrPropertyList = [NSJSONSerialization JSONObjectWithData:flickrJSONData
+                                                                 options:0
+                                                                   error:NULL];
+        }
+
+        NSString *regionName = [FlickrFetcher extractRegionNameFromPlaceInformation:flickrPropertyList];
+        RegionCompletionHandler regionCompletionHandler = [self.regionCompletionHandlers[@(downloadTask.taskIdentifier)] copy];
+        if (regionCompletionHandler) {
+            regionCompletionHandler(regionName, ^{
+                [self downloadTasksMightBeComplete];
+            });            
+        }
+        [self.regionCompletionHandlers removeObjectForKey:@(downloadTask.taskIdentifier)];
+    }
+}
+
+- (void)URLSession:(NSURLSession *)session
+      downloadTask:(NSURLSessionDownloadTask *)downloadTask
+ didResumeAtOffset:(int64_t)fileOffset
+expectedTotalBytes:(int64_t)expectedTotalBytes
+{
+}
+
+- (void)URLSession:(NSURLSession *)session
+      downloadTask:(NSURLSessionDownloadTask *)downloadTask
+      didWriteData:(int64_t)bytesWritten
+ totalBytesWritten:(int64_t)totalBytesWritten
+totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
+{
+}
+
+- (void)URLSession:(NSURLSession *)session
+              task:(NSURLSessionTask *)task
+didCompleteWithError:(NSError *)error
+{
+    if (error && (session == self.downloadSession)) {
+        NSLog(@"Flickr background download session failed: %@", error.localizedDescription);
+        [self downloadTasksMightBeComplete];
+    }
+}
+
+- (void)downloadTasksMightBeComplete
+{
+    if (self.downloadBackgroundURLSessionCompletionHandler) {
+        [self.downloadSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
+            if (![downloadTasks count]) {
+                void (^completionHandler)() = self.downloadBackgroundURLSessionCompletionHandler;
+                self.downloadBackgroundURLSessionCompletionHandler = nil;
+                if (completionHandler) {
+                    completionHandler();
+                }
+            }
+        }];
+    }
+}
+
 
 @end

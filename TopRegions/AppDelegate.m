@@ -3,44 +3,87 @@
 //  TopRegions
 //
 //  Created by Martin Mandl on 05.12.13.
-//  Copyright (c) 2013 m2m server software gmbh. All rights reserved.
+//  Copyright (c) 2014 m2m server software gmbh. All rights reserved.
 //
 
 #import "AppDelegate.h"
+#import "FlickrHelper.h"
+#import "DocumentHelper.h"
+#import "Photo+Flickr.h"
+#import "PhotoDatabaseAvailability.h"
 
 @implementation AppDelegate
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+#define FOREGROUND_FLICKR_FETCH_INTERVAL (15 * 60)
+
+- (BOOL)application:(UIApplication *)application
+didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    [DocumentHelper useDocumentWithOperation:^(UIManagedDocument *document, BOOL success) {
+        if (success) {
+            NSDictionary *userInfo = document.managedObjectContext ? @{ PhotoDatabaseAvailabilityContext : document.managedObjectContext } : nil;
+            [[NSNotificationCenter defaultCenter] postNotificationName:PhotoDatabaseAvailabilityNotification
+                                                                object:self
+                                                              userInfo:userInfo];
+            [NSTimer scheduledTimerWithTimeInterval:FOREGROUND_FLICKR_FETCH_INTERVAL
+                                             target:self
+                                           selector:@selector(startFlickrFetch:)
+                                           userInfo:nil
+                                            repeats:YES];
+        }
+    }];
+
+    [self startFlickrFetch];
     return YES;
 }
-							
-- (void)applicationWillResignActive:(UIApplication *)application
+
+- (void)application:(UIApplication *)application
+performFetchWithCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    [FlickrHelper loadRecentPhotosOnCompletion:^(NSArray *photos, NSError *error) {
+        if (error) {
+            NSLog(@"Flickr background fetch failed: %@", error.localizedDescription);
+            completionHandler(UIBackgroundFetchResultFailed);
+        } else {
+            [self useDocumentWithFlickrPhotos:photos];
+            completionHandler(UIBackgroundFetchResultNewData);
+        }
+    }];
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application
+- (void)application:(UIApplication *)application
+handleEventsForBackgroundURLSession:(NSString *)identifier
+  completionHandler:(void (^)())completionHandler
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    [FlickrHelper handleEventsForBackgroundURLSession:identifier
+                                    completionHandler:completionHandler];
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application
+- (void)useDocumentWithFlickrPhotos:(NSArray *)photos
 {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [DocumentHelper useDocumentWithOperation:^(UIManagedDocument *document, BOOL success) {
+        if (success) {
+            [Photo loadPhotosFromFlickrArray:photos
+                    intoManagedObjectContext:document.managedObjectContext];
+            [document saveToURL:document.fileURL
+               forSaveOperation:UIDocumentSaveForOverwriting
+              completionHandler:nil];
+        }
+    }];
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application
+- (void)startFlickrFetch
 {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [FlickrHelper startBackgroundDownloadRecentPhotosOnCompletion:^(NSArray *photos, void (^whenDone)()) {
+        [self useDocumentWithFlickrPhotos:photos];
+        if (whenDone) whenDone();
+    }];
 }
 
-- (void)applicationWillTerminate:(UIApplication *)application
+- (void)startFlickrFetch:(NSTimer *)timer
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [self startFlickrFetch];
 }
 
 @end
