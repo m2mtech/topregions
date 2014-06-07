@@ -22,6 +22,20 @@
     Photo *photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = photo.title;
     cell.detailTextLabel.text = photo.subtitle;
+
+    cell.imageView.image = [UIImage imageWithData:photo.thumbnail];
+    if (!cell.imageView.image) {
+        dispatch_queue_t q = dispatch_queue_create("Thumbnail Flickr Photo", 0);
+        dispatch_async(q, ^{
+            NSData *imageData = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:photo.thumbnailURL]];
+            [photo.managedObjectContext performBlock:^{
+                photo.thumbnail = imageData;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [cell setNeedsLayout];
+                });
+            }];
+        });
+    }
     
     return cell;
 }
