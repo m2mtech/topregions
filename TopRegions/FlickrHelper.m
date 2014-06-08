@@ -11,6 +11,10 @@
 @interface FlickrHelper() <NSURLSessionDownloadDelegate>
 
 @property (strong, nonatomic) NSURLSession *downloadSession;
+@property (strong, nonatomic) NSURLSession *cellularDownloadSession;
+@property (strong, nonatomic) NSURLSession *currentDownloadSession;
+@property (nonatomic) BOOL allowingCellularAccess;
+
 @property (copy, nonatomic) void (^downloadBackgroundURLSessionCompletionHandler)();
 @property (copy, nonatomic) void (^recentPhotosCompletionHandler)(NSArray *photos, void(^whenDone)());
 //@property (copy, nonatomic) void (^regionCompletionHandler)(NSString *regionName, void(^whenDone)());
@@ -19,6 +23,7 @@
 @end
 
 #define FLICKR_FETCH @"Flickr Download Session"
+#define FLICKR_FETCH_CELLULAR @"Cellular Flickr Download Session"
 #define FLICKR_FETCH_RECENT_PHOTOS @"Flickr Download Task to Download Recent Photos"
 #define FLICKR_FETCH_REGION @"Flickr Download Task to Download Region"
 #define BACKGROUND_FLICKR_FETCH_TIMEOUT 10
@@ -38,12 +43,35 @@
     if (!_downloadSession) {
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
-            _downloadSession = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration backgroundSessionConfiguration:FLICKR_FETCH]
+            NSURLSessionConfiguration *config = [NSURLSessionConfiguration backgroundSessionConfiguration:FLICKR_FETCH];
+            config.allowsCellularAccess = NO;
+            _downloadSession = [NSURLSession sessionWithConfiguration:config
                                                              delegate:self
                                                         delegateQueue:nil];
         });
     }
     return _downloadSession;
+}
+
+- (NSURLSession *)cellularDownloadSession
+{
+    if (!_cellularDownloadSession) {
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            NSURLSessionConfiguration *config = [NSURLSessionConfiguration backgroundSessionConfiguration:FLICKR_FETCH_CELLULAR];
+            config.allowsCellularAccess = YES;
+            _cellularDownloadSession = [NSURLSession sessionWithConfiguration:config
+                                                             delegate:self
+                                                        delegateQueue:nil];
+        });
+    }
+    return _cellularDownloadSession;
+}
+
+- (NSURLSession *)currentDownloadSession
+{
+    if (self.allowingCellularAccess) return self.cellularDownloadSession;
+    return self.downloadSession;
 }
 
 + (FlickrHelper *)sharedFlickrHelper
@@ -65,13 +93,21 @@
     }
 }
 
-+ (void)startBackgroundDownloadRecentPhotosOnCompletion:(void (^)(NSArray *photos, void(^whenDone)()))completionHandler
++ (BOOL)isCellularDownloadSession
 {
     FlickrHelper *fh = [FlickrHelper sharedFlickrHelper];
-    
-    [fh.downloadSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
+    return fh.currentDownloadSession.configuration.allowsCellularAccess;
+}
+
++ (void)startBackgroundDownloadRecentPhotosOnCompletion:(void (^)(NSArray *photos, void(^whenDone)()))completionHandler
+                                 allowingCellularAccess:(BOOL)cellular
+{
+    FlickrHelper *fh = [FlickrHelper sharedFlickrHelper];
+    fh.allowingCellularAccess = cellular;
+    NSURLSession *session = fh.currentDownloadSession;
+    [session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
         if (![downloadTasks count]) {
-            NSURLSessionDownloadTask *task = [fh.downloadSession downloadTaskWithURL:[FlickrFetcher URLforRecentGeoreferencedPhotos]];
+            NSURLSessionDownloadTask *task = [session downloadTaskWithURL:[FlickrFetcher URLforRecentGeoreferencedPhotos]];
             task.taskDescription = FLICKR_FETCH_RECENT_PHOTOS;
             fh.recentPhotosCompletionHandler = completionHandler;
             [task resume];
@@ -84,11 +120,12 @@
 + (void)startBackgroundDownloadRegionForPlaceID:(NSString *)placeID onCompletion:(RegionCompletionHandler)completionHandler
 {
     FlickrHelper *fh = [FlickrHelper sharedFlickrHelper];
-    
-    [fh.downloadSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
-        NSURLSessionDownloadTask *task = [fh.downloadSession downloadTaskWithURL:[FlickrFetcher URLforInformationAboutPlace:placeID]];
+    NSURLSession *session = fh.currentDownloadSession;
+    [session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
+        NSURLSessionDownloadTask *task = [session downloadTaskWithURL:[FlickrFetcher URLforInformationAboutPlace:placeID]];
         task.taskDescription = FLICKR_FETCH_REGION;
-        [fh.regionCompletionHandlers setObject:[completionHandler copy] forKey:@(task.taskIdentifier)];
+        [fh.regionCompletionHandlers setObject:[completionHandler copy]
+                                        forKey:[NSString stringWithFormat:@"%@%d", session.description, task.taskIdentifier]];
         [task resume];
     }];
 }
@@ -97,6 +134,7 @@
 {
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration ephemeralSessionConfiguration];
     config.allowsCellularAccess = NO;
+    [FlickrHelper sharedFlickrHelper].allowingCellularAccess = NO;
     config.timeoutIntervalForRequest = BACKGROUND_FLICKR_FETCH_TIMEOUT;
     NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
     NSURLSessionDownloadTask *task = [session downloadTaskWithURL:[FlickrHelper URLforRecentGeoreferencedPhotos]
@@ -293,7 +331,7 @@ didFinishDownloadingToURL:(NSURL *)location
         }
 
         NSString *regionName = [FlickrFetcher extractRegionNameFromPlaceInformation:flickrPropertyList];
-        RegionCompletionHandler regionCompletionHandler = [self.regionCompletionHandlers[@(downloadTask.taskIdentifier)] copy];
+        RegionCompletionHandler regionCompletionHandler = [self.regionCompletionHandlers[[NSString stringWithFormat:@"%@%d", session.description, downloadTask.taskIdentifier]] copy];
         if (regionCompletionHandler) {
             regionCompletionHandler(regionName, ^{
                 [self downloadTasksMightBeComplete];
@@ -322,7 +360,7 @@ totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
               task:(NSURLSessionTask *)task
 didCompleteWithError:(NSError *)error
 {
-    if (error && (session == self.downloadSession)) {
+    if (error) {
         NSLog(@"Flickr background download session failed: %@", error.localizedDescription);
         [self downloadTasksMightBeComplete];
     }
@@ -331,7 +369,8 @@ didCompleteWithError:(NSError *)error
 - (void)downloadTasksMightBeComplete
 {
     if (self.downloadBackgroundURLSessionCompletionHandler) {
-        [self.downloadSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
+        NSURLSession *session = self.currentDownloadSession;
+        [session getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
             if (![downloadTasks count]) {
                 void (^completionHandler)() = self.downloadBackgroundURLSessionCompletionHandler;
                 self.downloadBackgroundURLSessionCompletionHandler = nil;

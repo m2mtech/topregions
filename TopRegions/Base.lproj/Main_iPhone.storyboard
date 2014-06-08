@@ -66,12 +66,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="C9p-l6-f0L"/>
-                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="Kf1-EN-kLu">
-                        <autoresizingMask key="autoresizingMask"/>
-                        <connections>
-                            <action selector="fetchPhotos" destination="d0g-KU-E4E" eventType="valueChanged" id="IAA-Mk-N51"/>
-                        </connections>
-                    </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WzX-Mk-9by" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -120,8 +114,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Top Regions" id="XvA-si-nPM"/>
-                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="E5p-Vl-FtP">
+                    <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="deA-5S-7Z6">
                         <autoresizingMask key="autoresizingMask"/>
+                        <connections>
+                            <action selector="fetchRegions" destination="gXA-6N-Fle" eventType="valueChanged" id="ewR-zp-F8R"/>
+                        </connections>
                     </refreshControl>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yps-qd-09V" userLabel="First Responder" sceneMemberID="firstResponder"/>

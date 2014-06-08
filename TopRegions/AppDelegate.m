@@ -31,6 +31,11 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
                                            selector:@selector(startFlickrFetch:)
                                            userInfo:nil
                                             repeats:YES];
+            
+            [[NSNotificationCenter defaultCenter] addObserver:self
+                                                     selector:@selector(startCellularFlickrFetch)
+                                                         name:STARTCELLULARFLICKRFETCHNOTIFICATION
+                                                       object:nil];
         }
     }];
 
@@ -73,12 +78,22 @@ handleEventsForBackgroundURLSession:(NSString *)identifier
     }];
 }
 
-- (void)startFlickrFetch
+- (void)startFlickrFetchAllowingCellularAccess:(BOOL)cellular
 {
     [FlickrHelper startBackgroundDownloadRecentPhotosOnCompletion:^(NSArray *photos, void (^whenDone)()) {
         [self useDocumentWithFlickrPhotos:photos];
         if (whenDone) whenDone();
-    }];
+    } allowingCellularAccess:cellular];
+}
+
+- (void)startCellularFlickrFetch
+{
+    [self startFlickrFetchAllowingCellularAccess:YES];
+}
+
+- (void)startFlickrFetch
+{
+    [self startFlickrFetchAllowingCellularAccess:NO];
 }
 
 - (void)startFlickrFetch:(NSTimer *)timer

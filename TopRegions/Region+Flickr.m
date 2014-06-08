@@ -20,8 +20,10 @@
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
 
-    if (!matches) {
+    if (!matches || ![matches count]) {
         // nothing to do ...
+        [[NSNotificationCenter defaultCenter] postNotificationName:FINISHEDCELLULARFLICKRFETCHNOTIFICATION
+                                                            object:self];
     } else {
         BOOL saveDocument = NO;
         
@@ -68,6 +70,8 @@
                                     [document saveToURL:document.fileURL
                                        forSaveOperation:UIDocumentSaveForOverwriting
                                       completionHandler:nil];
+                                    [[NSNotificationCenter defaultCenter] postNotificationName:FINISHEDCELLULARFLICKRFETCHNOTIFICATION
+                                                                                        object:self];
                                 }
                         }
                         if (whenDone) whenDone();

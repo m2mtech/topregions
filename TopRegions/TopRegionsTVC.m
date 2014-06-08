@@ -8,6 +8,7 @@
 
 #import "TopRegionsTVC.h"
 #import "PhotoDatabaseAvailability.h"
+#import "FlickrHelper.h"
 
 @interface TopRegionsTVC ()
 
@@ -26,6 +27,22 @@
                                                   usingBlock:^(NSNotification *note) {
                                                       self.managedObjectContext = note.userInfo[PhotoDatabaseAvailabilityContext];
                                                   }];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(finishedRefreshing)
+                                                 name:FINISHEDCELLULARFLICKRFETCHNOTIFICATION
+                                               object:nil];
+}
+
+- (void)finishedRefreshing
+{
+    if ([FlickrHelper isCellularDownloadSession]) {
+        [self.refreshControl endRefreshing];
+    }
 }
 
 #define NUMBER_OF_SHOWN_REGIONS 50
@@ -48,6 +65,11 @@
                                                                         managedObjectContext:managedObjectContext
                                                                           sectionNameKeyPath:nil
                                                                                    cacheName:nil];
+}
+
+- (IBAction)fetchRegions
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:STARTCELLULARFLICKRFETCHNOTIFICATION object:self];
 }
 
 - (void)viewDidAppear:(BOOL)animated

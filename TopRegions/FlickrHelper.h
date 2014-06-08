@@ -10,12 +10,16 @@
 
 typedef void (^RegionCompletionHandler) (NSString *regionName, void(^whenDone)());
 
+#define STARTCELLULARFLICKRFETCHNOTIFICATION @"startCellularFlickrFetch"
+#define FINISHEDCELLULARFLICKRFETCHNOTIFICATION @"finishedCellularFlickrFetch"
+
 @interface FlickrHelper : FlickrFetcher
 
 + (void)handleEventsForBackgroundURLSession:(NSString *)identifier
                           completionHandler:(void (^)())completionHandler;
 
-+ (void)startBackgroundDownloadRecentPhotosOnCompletion:(void (^)(NSArray *photos, void(^whenDone)()))completionHandler;
++ (void)startBackgroundDownloadRecentPhotosOnCompletion:(void (^)(NSArray *photos, void(^whenDone)()))completionHandler
+                                 allowingCellularAccess:(BOOL)cellular;
 
 + (void)loadRecentPhotosOnCompletion:(void (^)(NSArray *places, NSError *error))completionHandler;
 
@@ -25,6 +29,8 @@ typedef void (^RegionCompletionHandler) (NSString *regionName, void(^whenDone)()
 + (void)loadPhotosInPlace:(NSDictionary *)place
                maxResults:(NSUInteger)results
              onCompletion:(void (^)(NSArray *photos, NSError *error))completionHandler;
+
++ (BOOL)isCellularDownloadSession;
 
 + (NSString *)countryOfPlace:(NSDictionary *)place;
 + (NSString *)titleOfPlace:(NSDictionary *)place;
