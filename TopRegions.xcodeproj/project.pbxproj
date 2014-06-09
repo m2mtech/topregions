@@ -29,6 +29,7 @@
 		5B0D0E81185106A300298282 /* TopRegionsTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0D0E80185106A300298282 /* TopRegionsTVC.m */; };
 		5B0D0E841851EE5900298282 /* PhotosTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0D0E831851EE5900298282 /* PhotosTVC.m */; };
 		5B0D0E871851EF8A00298282 /* RegionPhotosTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0D0E861851EF8A00298282 /* RegionPhotosTVC.m */; };
+		5B2D33031945FDC50005E2CD /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B2D33021945FDC50005E2CD /* Photo.m */; };
 		5B390FA1193BBE5A00D393BB /* Recent+Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B390FA0193BBE5A00D393BB /* Recent+Photo.m */; };
 		5B710B4C18523CDE00C19E5F /* ImageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B710B4B18523CDE00C19E5F /* ImageVC.m */; };
 		5B710B4F1853807700C19E5F /* RecentPhotos.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B710B4E1853807700C19E5F /* RecentPhotos.m */; };
@@ -37,7 +38,6 @@
 		5BDDBDCE19323464002250C4 /* DocumentHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDDBDCD19323464002250C4 /* DocumentHelper.m */; };
 		5BDDBDDF19324897002250C4 /* Recent.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDDBDDE19324897002250C4 /* Recent.m */; };
 		5BDDBDE219324897002250C4 /* Photographer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDDBDE119324897002250C4 /* Photographer.m */; };
-		5BDDBDE519324897002250C4 /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDDBDE419324897002250C4 /* Photo.m */; };
 		5BDDBDEC19324C0B002250C4 /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDDBDEB19324C0B002250C4 /* CoreDataTableViewController.m */; };
 		5BDDBDEF19324CDD002250C4 /* Photo+Flickr.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDDBDEE19324CDD002250C4 /* Photo+Flickr.m */; };
 		5BDDBDF21932599E002250C4 /* Region.m in Sources */ = {isa = PBXBuildFile; fileRef = 5BDDBDF11932599E002250C4 /* Region.m */; };
@@ -91,6 +91,8 @@
 		5B0D0E831851EE5900298282 /* PhotosTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosTVC.m; sourceTree = "<group>"; };
 		5B0D0E851851EF8A00298282 /* RegionPhotosTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegionPhotosTVC.h; sourceTree = "<group>"; };
 		5B0D0E861851EF8A00298282 /* RegionPhotosTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegionPhotosTVC.m; sourceTree = "<group>"; };
+		5B2D33011945FDC50005E2CD /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
+		5B2D33021945FDC50005E2CD /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
 		5B390F9F193BBE5A00D393BB /* Recent+Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Recent+Photo.h"; sourceTree = "<group>"; };
 		5B390FA0193BBE5A00D393BB /* Recent+Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Recent+Photo.m"; sourceTree = "<group>"; };
 		5B710B4A18523CDE00C19E5F /* ImageVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageVC.h; sourceTree = "<group>"; };
@@ -107,8 +109,6 @@
 		5BDDBDDE19324897002250C4 /* Recent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Recent.m; sourceTree = "<group>"; };
 		5BDDBDE019324897002250C4 /* Photographer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photographer.h; sourceTree = "<group>"; };
 		5BDDBDE119324897002250C4 /* Photographer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photographer.m; sourceTree = "<group>"; };
-		5BDDBDE319324897002250C4 /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
-		5BDDBDE419324897002250C4 /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
 		5BDDBDEA19324C0B002250C4 /* CoreDataTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataTableViewController.h; sourceTree = "<group>"; };
 		5BDDBDEB19324C0B002250C4 /* CoreDataTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataTableViewController.m; sourceTree = "<group>"; };
 		5BDDBDED19324CDD002250C4 /* Photo+Flickr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Photo+Flickr.h"; sourceTree = "<group>"; };
@@ -268,8 +268,8 @@
 				5BDDBDCC19323464002250C4 /* DocumentHelper.h */,
 				5BDDBDCD19323464002250C4 /* DocumentHelper.m */,
 				5BF0F37F193532D9003D5C50 /* PhotoDatabaseAvailability.h */,
-				5BDDBDE319324897002250C4 /* Photo.h */,
-				5BDDBDE419324897002250C4 /* Photo.m */,
+				5B2D33011945FDC50005E2CD /* Photo.h */,
+				5B2D33021945FDC50005E2CD /* Photo.m */,
 				5BDDBDED19324CDD002250C4 /* Photo+Flickr.h */,
 				5BDDBDEE19324CDD002250C4 /* Photo+Flickr.m */,
 				5BDDBDE019324897002250C4 /* Photographer.h */,
@@ -417,6 +417,7 @@
 				5B710B521853832D00C19E5F /* RecentPhotosTVC.m in Sources */,
 				5BDDBDF21932599E002250C4 /* Region.m in Sources */,
 				5BDDBDF819326178002250C4 /* Region+Create.m in Sources */,
+				5B2D33031945FDC50005E2CD /* Photo.m in Sources */,
 				5B0D0E871851EF8A00298282 /* RegionPhotosTVC.m in Sources */,
 				5B0D0E511850BDC900298282 /* ViewController.m in Sources */,
 				5BDDBDCB192E38B0002250C4 /* TopRegions.xcdatamodeld in Sources */,
@@ -424,7 +425,6 @@
 				5B0D0E7E1851068C00298282 /* RegionsTVC.m in Sources */,
 				5B0D0E751850BF5A00298282 /* FlickrFetcher.m in Sources */,
 				5BDDBDEF19324CDD002250C4 /* Photo+Flickr.m in Sources */,
-				5BDDBDE519324897002250C4 /* Photo.m in Sources */,
 				5B0D0E81185106A300298282 /* TopRegionsTVC.m in Sources */,
 				5BDDBDDF19324897002250C4 /* Recent.m in Sources */,
 				5B710B4F1853807700C19E5F /* RecentPhotos.m in Sources */,

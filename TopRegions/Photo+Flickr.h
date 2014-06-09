@@ -18,4 +18,6 @@
 + (void)loadPhotosFromFlickrArray:(NSArray *)photos // of Flickr NSDictionary
          intoManagedObjectContext:(NSManagedObjectContext *)context;
 
++ (void)removeOldPhotosFromManagedObjectContext:(NSManagedObjectContext *)context;
+
 @end

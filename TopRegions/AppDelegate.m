@@ -36,6 +36,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
                                                      selector:@selector(startCellularFlickrFetch)
                                                          name:STARTCELLULARFLICKRFETCHNOTIFICATION
                                                        object:nil];
+            [Photo removeOldPhotosFromManagedObjectContext:document.managedObjectContext];
         }
     }];
 

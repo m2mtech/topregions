@@ -11,6 +11,7 @@
 #import "Photographer+Create.h"
 #import "Region+Create.h"
 #import "Region+Flickr.h"
+#import "Recent.h"
 
 @implementation Photo (Flickr)
 
@@ -49,6 +50,9 @@
                                  andPhotographer:photo.photographer
                           inManagedObjectContext:context
                                  existingRegions:regions];
+    
+    photo.created = [NSDate date];
+    
 //    }
     
     return photo;
@@ -95,6 +99,43 @@
     }
     
     [Region loadRegionNamesFromFlickrIntoManagedObjectContext:context];
+}
+
+#define TIMETOREMOVEOLDPHOTS 60*60*24*7
+
++ (void)removeOldPhotosFromManagedObjectContext:(NSManagedObjectContext *)context
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photo"];
+    request.predicate = [NSPredicate predicateWithFormat:@"created < %@", [NSDate dateWithTimeIntervalSinceNow:-TIMETOREMOVEOLDPHOTS]];
+    NSError *error = nil;
+    NSArray *matches = [context executeFetchRequest:request error:&error];
+    if (!matches || error) {
+        // handle error
+    } else if (![matches count]) {
+        // nothing to do
+    } else {
+        for (Photo *photo in matches) {
+            [photo remove];
+        }
+        [context save:nil];
+    }
+}
+
+- (void)remove
+{
+    if ([self.photographer.photos count] == 1) {
+        [self.managedObjectContext deleteObject:self.photographer];
+    }
+    if ([self.region.photos count] == 1) {
+        [self.managedObjectContext deleteObject:self.region];
+    } else {
+        self.region.photographerCount = @([self.region.photographers count]);
+        self.region.photoCount = @([self.region.photos count] - 1);
+    }
+    if (self.recent) {
+        [self.managedObjectContext deleteObject:self.recent];
+    }
+    [self.managedObjectContext deleteObject:self];
 }
 
 @end
