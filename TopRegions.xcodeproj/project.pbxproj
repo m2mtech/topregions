@@ -30,6 +30,7 @@
 		5B0D0E841851EE5900298282 /* PhotosTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0D0E831851EE5900298282 /* PhotosTVC.m */; };
 		5B0D0E871851EF8A00298282 /* RegionPhotosTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B0D0E861851EF8A00298282 /* RegionPhotosTVC.m */; };
 		5B2D33031945FDC50005E2CD /* Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B2D33021945FDC50005E2CD /* Photo.m */; };
+		5B2D3306194617A30005E2CD /* ImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B2D3305194617A30005E2CD /* ImageCache.m */; };
 		5B390FA1193BBE5A00D393BB /* Recent+Photo.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B390FA0193BBE5A00D393BB /* Recent+Photo.m */; };
 		5B710B4C18523CDE00C19E5F /* ImageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B710B4B18523CDE00C19E5F /* ImageVC.m */; };
 		5B710B4F1853807700C19E5F /* RecentPhotos.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B710B4E1853807700C19E5F /* RecentPhotos.m */; };
@@ -93,6 +94,8 @@
 		5B0D0E861851EF8A00298282 /* RegionPhotosTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegionPhotosTVC.m; sourceTree = "<group>"; };
 		5B2D33011945FDC50005E2CD /* Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Photo.h; sourceTree = "<group>"; };
 		5B2D33021945FDC50005E2CD /* Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Photo.m; sourceTree = "<group>"; };
+		5B2D3304194617A30005E2CD /* ImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCache.h; sourceTree = "<group>"; };
+		5B2D3305194617A30005E2CD /* ImageCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCache.m; sourceTree = "<group>"; };
 		5B390F9F193BBE5A00D393BB /* Recent+Photo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Recent+Photo.h"; sourceTree = "<group>"; };
 		5B390FA0193BBE5A00D393BB /* Recent+Photo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Recent+Photo.m"; sourceTree = "<group>"; };
 		5B710B4A18523CDE00C19E5F /* ImageVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageVC.h; sourceTree = "<group>"; };
@@ -191,6 +194,8 @@
 				5BDDBDC7192E3828002250C4 /* View Controller */,
 				5BDDBDC8192E387C002250C4 /* Core Data */,
 				5B0D0E711850BF5A00298282 /* Flickr Fetcher */,
+				5B2D3304194617A30005E2CD /* ImageCache.h */,
+				5B2D3305194617A30005E2CD /* ImageCache.m */,
 				5B0D0E3E1850BDC900298282 /* Supporting Files */,
 			);
 			path = TopRegions;
@@ -412,6 +417,7 @@
 				5B0D0E7B1850C65A00298282 /* FlickrHelper.m in Sources */,
 				5BDDBDE219324897002250C4 /* Photographer.m in Sources */,
 				5BDDBDEC19324C0B002250C4 /* CoreDataTableViewController.m in Sources */,
+				5B2D3306194617A30005E2CD /* ImageCache.m in Sources */,
 				5B390FA1193BBE5A00D393BB /* Recent+Photo.m in Sources */,
 				5BDDBDFB19327200002250C4 /* Region+Flickr.m in Sources */,
 				5B710B521853832D00C19E5F /* RecentPhotosTVC.m in Sources */,
