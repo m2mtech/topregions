@@ -12,6 +12,7 @@
 
 + (Region *)regionWithPlaceID:(NSString *)placeID
               andPhotographer:(Photographer *)photographer
-       inManagedObjectContext:(NSManagedObjectContext *)context;
+       inManagedObjectContext:(NSManagedObjectContext *)context
+              existingRegions:(NSMutableArray *)regions;
 
 @end

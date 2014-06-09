@@ -45,11 +45,14 @@ typedef void (^RegionCompletionHandler) (NSString *regionName, void(^whenDone)()
 
 + (NSURL *)URLforPhoto:(NSDictionary *)photo;
 + (NSString *)IDforPhoto:(NSDictionary *)photo;
++ (NSArray *)IDsforPhotos:(NSArray *)photos;
 + (NSURL *)URLforThumbnail:(NSDictionary *)photo;
 
 + (NSString *)placeIDforPhoto:(NSDictionary *)photo;
++ (NSArray *)placeIDsforPhotos:(NSArray *)photos;
 
 + (NSString *)ownerOfPhoto:(NSDictionary *)photo;
++ (NSArray *)ownersOfPhotos:(NSArray *)photos;
 
 + (NSString *)placeIDforPlace:(NSDictionary *)place;
 

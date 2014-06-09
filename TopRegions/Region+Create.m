@@ -13,15 +13,12 @@
 + (Region *)regionWithPlaceID:(NSString *)placeID
               andPhotographer:(Photographer *)photographer
        inManagedObjectContext:(NSManagedObjectContext *)context
+              existingRegions:(NSMutableArray *)regions
 {
     Region *region = nil;
     
     if ([placeID length]) {
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Region"];
-        request.predicate = [NSPredicate predicateWithFormat:@"placeID = %@", placeID];
-        
-        NSError *error;
-        NSArray *matches = [context executeFetchRequest:request error:&error];
+        NSArray *matches = [regions filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"placeID = %@", placeID]];
         
         if (!matches || ([matches count] > 1)) {
             // handle error
@@ -33,6 +30,7 @@
             
             [region addPhotographersObject:photographer];
             region.photographerCount = @1;
+            [regions addObject:region];
         } else {
             region = [matches lastObject];
             region.photoCount = @([region.photoCount intValue] + 1);

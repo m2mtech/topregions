@@ -284,14 +284,29 @@
     return [photo valueForKeyPath:FLICKR_PHOTO_ID];
 }
 
++ (NSArray *)IDsforPhotos:(NSArray *)photos
+{
+    return [photos valueForKeyPath:FLICKR_PHOTO_ID];
+}
+
 + (NSString *)placeIDforPhoto:(NSDictionary *)photo
 {
     return [photo valueForKeyPath:FLICKR_PHOTO_PLACE_ID];
 }
 
++ (NSArray *)placeIDsforPhotos:(NSArray *)photos
+{
+    return [photos valueForKeyPath:[NSString stringWithFormat:@"@distinctUnionOfObjects.%@", FLICKR_PHOTO_PLACE_ID]];
+}
+
 + (NSString *)ownerOfPhoto:(NSDictionary *)photo
 {
     return [photo valueForKeyPath:FLICKR_PHOTO_OWNER];
+}
+
++ (NSArray *)ownersOfPhotos:(NSArray *)photos
+{
+    return [photos valueForKeyPath:[NSString stringWithFormat:@"@distinctUnionOfObjects.%@", FLICKR_PHOTO_OWNER]];
 }
 
 #define FLICKR_PLACE_PLACE_ID @"place.place_id"

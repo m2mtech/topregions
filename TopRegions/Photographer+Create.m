@@ -12,15 +12,12 @@
 
 + (Photographer *)photographerWithName:(NSString *)name
                 inManagedObjectContext:(NSManagedObjectContext *)context
+                 existingPhotographers:(NSMutableArray *)photographers
 {
     Photographer *photographer = nil;
     
     if ([name length]) {
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photographer"];
-        request.predicate = [NSPredicate predicateWithFormat:@"name = %@", name];
-        
-        NSError *error;
-        NSArray *matches = [context executeFetchRequest:request error:&error];
+        NSArray *matches = [photographers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"name = %@", name]];
         
         if (!matches || ([matches count] > 1)) {
             // handle error
@@ -28,6 +25,7 @@
             photographer = [NSEntityDescription insertNewObjectForEntityForName:@"Photographer"
                                                          inManagedObjectContext:context];
             photographer.name = name;
+            [photographers addObject:photographer];
         } else {
             photographer = [matches lastObject];
         }

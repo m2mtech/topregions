@@ -16,21 +16,23 @@
 
 + (Photo *)photoWithFlickrInfo:(NSDictionary *)photoDictionary
         inManagedObjectContext:(NSManagedObjectContext *)context
+         existingPhotographers:(NSMutableArray *)photographers
+               existingRegions:(NSMutableArray *)regions
 {
     Photo *photo = nil;
     
     NSString *unique = [FlickrHelper IDforPhoto:photoDictionary];
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photo"];
-    request.predicate = [NSPredicate predicateWithFormat:@"unique = %@", unique];
+//    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photo"];
+//    request.predicate = [NSPredicate predicateWithFormat:@"unique = %@", unique];
     
-    NSError *error;
-    NSArray *matches = [context executeFetchRequest:request error:&error];
+//    NSError *error;
+//    NSArray *matches = [context executeFetchRequest:request error:&error];
     
-    if (!matches || error || ([matches count] > 1)) {
+//    if (!matches || error || ([matches count] > 1)) {
         // handle error
-    } else if ([matches count]) {
-        photo = [matches firstObject];
-    } else {
+//    } else if ([matches count]) {
+//        photo = [matches firstObject];
+//    } else {
         photo = [NSEntityDescription insertNewObjectForEntityForName:@"Photo"
                                               inManagedObjectContext:context];
         photo.unique = unique;
@@ -40,12 +42,14 @@
         photo.thumbnailURL = [[FlickrHelper URLforThumbnail:photoDictionary] absoluteString];
         
         photo.photographer = [Photographer photographerWithName:[FlickrHelper ownerOfPhoto:photoDictionary]
-                                         inManagedObjectContext:context];
+                                         inManagedObjectContext:context
+                                          existingPhotographers:photographers];
         
         photo.region = [Region regionWithPlaceID:[FlickrHelper placeIDforPhoto:photoDictionary]
                                  andPhotographer:photo.photographer
-                          inManagedObjectContext:context];
-    }
+                          inManagedObjectContext:context
+                                 existingRegions:regions];
+//    }
     
     return photo;
 }
@@ -54,9 +58,42 @@
 + (void)loadPhotosFromFlickrArray:(NSArray *)photos // of Flickr NSDictionary
          intoManagedObjectContext:(NSManagedObjectContext *)context
 {
-    for (NSDictionary *photo in photos) {
-        [self photoWithFlickrInfo:photo inManagedObjectContext:context];
+    NSMutableArray *existingPhotographers = [NSMutableArray array];
+    NSMutableArray *existingRegions = [NSMutableArray array];
+    if ([photos count]) {
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Photo"];
+        request.predicate = [NSPredicate predicateWithFormat:@"unique IN %@", [FlickrHelper IDsforPhotos:photos]];
+        NSError *error;
+        NSArray *matches = [context executeFetchRequest:request error:&error];
+        if (!matches || ![matches count]) {
+            // nothing to do ...
+        } else {
+            NSArray *existingPhotoIDs = [matches valueForKeyPath:@"unique"];
+            NSMutableArray *newPhotos = [NSMutableArray arrayWithCapacity:[photos count] - [matches count]];
+            for (NSDictionary *photo in photos) {
+                if (![existingPhotoIDs containsObject:[FlickrHelper IDforPhoto:photo]]) {
+                    [newPhotos addObject:photo];
+                }
+            }
+            photos = newPhotos;
+        }
+        
+        request = [NSFetchRequest fetchRequestWithEntityName:@"Photographer"];
+        request.predicate = [NSPredicate predicateWithFormat:@"name IN %@", [FlickrHelper ownersOfPhotos:photos]];
+        existingPhotographers = [[context executeFetchRequest:request error:&error] mutableCopy];
+        
+        request = [NSFetchRequest fetchRequestWithEntityName:@"Region"];
+        request.predicate = [NSPredicate predicateWithFormat:@"placeID IN %@", [FlickrHelper placeIDsforPhotos:photos]];
+        existingRegions = [[context executeFetchRequest:request error:&error] mutableCopy];
     }
+    
+    for (NSDictionary *photo in photos) {
+        [self photoWithFlickrInfo:photo
+           inManagedObjectContext:context
+            existingPhotographers:existingPhotographers
+                  existingRegions:existingRegions];
+    }
+    
     [Region loadRegionNamesFromFlickrIntoManagedObjectContext:context];
 }
 

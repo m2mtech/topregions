@@ -11,7 +11,9 @@
 @interface Photo (Flickr)
 
 + (Photo *)photoWithFlickrInfo:(NSDictionary *)photoDictionary
-        inManagedObjectContext:(NSManagedObjectContext *)context;
+        inManagedObjectContext:(NSManagedObjectContext *)context
+         existingPhotographers:(NSMutableArray *)photographers
+               existingRegions:(NSMutableArray *)regions;
 
 + (void)loadPhotosFromFlickrArray:(NSArray *)photos // of Flickr NSDictionary
          intoManagedObjectContext:(NSManagedObjectContext *)context;

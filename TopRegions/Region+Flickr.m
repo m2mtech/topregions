@@ -16,7 +16,6 @@
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Region"];
     request.predicate = [NSPredicate predicateWithFormat:@"name.length = %@", nil];
-
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
 

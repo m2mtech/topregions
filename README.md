@@ -15,6 +15,7 @@ A free FlickrAPIKey is available at
 
 ### various versions are available via branches and tags:
 
++ [Assignment #6 Extra Task #2](http://cs193p.m2m.at/cs193p-assignment-6-extra-task-2-fall-2013-14/) -> [assignment6extratask2](https://github.com/m2mtech/topregions/tree/assignment6extratask2)
 + [Assignment #6 Extra Task #1](http://cs193p.m2m.at/cs193p-assignment-6-extra-task-1-fall-2013-14/) -> [assignment6extratask1](https://github.com/m2mtech/topregions/tree/assignment6extratask1)
 + [Assignment #6 Task #8](http://cs193p.m2m.at/cs193p-assignment-6-task-8-fall-2013-14/) -> [assignment6task8](https://github.com/m2mtech/topregions/tree/assignment6task8)
 + [Assignment #6 Task #1 to #7](http://cs193p.m2m.at/tag/cs193p+assignment-6+task-1-7+2013-14/) -> [assignment6task1-7](https://github.com/m2mtech/topregions/tree/assignment6task1-7)
@@ -30,4 +31,3 @@ A free FlickrAPIKey is available at
 + [Assignment #5 Task #3](http://cs193p.m2m.at/cs193p-assignment-5-task-3-fall-2013-14/) -> [assignment5task3](https://github.com/m2mtech/topplaces-2013-14/tree/assignment5task3)
 + [Assignment #5 Task #2](http://cs193p.m2m.at/cs193p-assignment-5-task-2-fall-2013-14/) -> [assignment5task2](https://github.com/m2mtech/topplaces-2013-14/tree/assignment5task2)
 + [Assignment #5 Task #1](http://cs193p.m2m.at/cs193p-assignment-5-task-1-fall-2013-14/) -> [assignment5task1](https://github.com/m2mtech/topplaces-2013-14/tree/assignment5task1)
-
